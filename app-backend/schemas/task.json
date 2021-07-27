@@ -1,0 +1,15 @@
+{
+  "required": [
+    "title",
+    "user_id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "integer"
+    }
+  }
+}

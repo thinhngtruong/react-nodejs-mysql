@@ -1,0 +1,36 @@
+version: "3"
+services:
+    db:
+        image: mysql:5.7
+        restart: unless-stopped
+        ports: 
+            - 3306:3306
+        volumes: 
+            - $PWD/db:/var/lib/mysql
+            - $PWD/scripts:/docker-entrypoint-initdb.d
+        environment: 
+            - MYSQL_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=todoapp
+    backend: 
+        depends_on: 
+            - db
+        build: ./app-backend
+        restart: unless-stopped
+        ports: 
+            - 3030:3030
+        environment: 
+            - DB_HOST=db
+            - DB_USER=root
+            - DB_PWD=root
+            - DB_NAME=todoapp
+            - DB_PORT=3306
+    react: 
+        build: 
+            context: ./app-react
+            args: 
+                - REACT_APP_BACKEND=http://192.168.31.128:3030
+        ports: 
+            - 4000:80
+
+    
